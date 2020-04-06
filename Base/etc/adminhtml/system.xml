@@ -7,7 +7,6 @@
             <resource>Magecomp_Base::marketplace</resource>
             <group id="extensions_view" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Marketplace</label>
-                <frontend_type>text</frontend_type>
                 <frontend_model>Magecomp\Base\Block\Store</frontend_model>
             </group>
         </section>

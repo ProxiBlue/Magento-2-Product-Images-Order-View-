@@ -4,7 +4,6 @@
 		<sequence>
 			<module name="Magento_Backend"/>
 			<module name="Magento_Sales"/>
-			<module name="Magecomp_Base"/>
 		</sequence>
 	</module>
 </config>
