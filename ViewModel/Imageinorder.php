@@ -9,6 +9,10 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
     const IMAGEWIDTH = 200;
     const IMAGEHEIGTH = 200;
 
+    const IMAGEWIDTHLARGE = 500;
+    const IMAGEHEIGTHLARGE = 500;
+
+
     protected $helperImg;
     protected $productImgHelper;
 
@@ -25,7 +29,11 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
 
     public function getImageUrl( $product )
     {
-
         return $this->helperImg->init($product, 'small_image')->setImageFile($product->getSmallImage())->resize(self::IMAGEWIDTH, self::IMAGEHEIGTH)->getUrl();
+    }
+
+    public function getImageUrlLarge( $product )
+    {
+        return $this->helperImg->init($product, 'large_image')->setImageFile($product->getSmallImage())->resize(self::IMAGEWIDTHLARGE, self::IMAGEHEIGTHLARGE)->getUrl();
     }
 }

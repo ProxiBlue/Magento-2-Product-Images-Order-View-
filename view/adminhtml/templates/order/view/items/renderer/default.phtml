@@ -13,7 +13,23 @@ $viewModel = $block->getViewModel();
     if ($viewModel->isEnbaled()) { ?>
         <td class="<?= /* @noEscape */
         $columns['product_img'] ?>">
-            <img src="<?php echo $image_url; ?>"/>
+            <img id="inline-image-<?=$product->getId(); ?>" src="<?php echo $image_url; ?>"/>
+            <div id="myModal<?=$product->getId(); ?>" class="modal">
+                <img class="modal-content" src="<?php echo $viewModel->getImageUrlLarge($product); ?>">
+                <div class="caption" id="caption<?=$product->getId(); ?>"><?= $product->getName(); ?></div>
+                <div class="click-to-close">Click anywhere to close</div>
+            </div>
+            <script>
+                var modal = document.getElementById("myModal<?=$product->getId(); ?>");
+                var img = document.getElementById("inline-image-<?=$product->getId(); ?>");
+                var captionText = document.getElementById("caption<?=$product->getId(); ?>");
+                img.onclick = function(){
+                    modal.style.display = "block";
+                }
+                modal.onclick = function() {
+                    modal.style.display = "none";
+                }
+            </script>
         </td>
     <?php } ?>
 
