@@ -20,14 +20,14 @@ $viewModel = $block->getViewModel();
                 <div class="click-to-close">Click anywhere to close</div>
             </div>
             <script>
-                var modal = document.getElementById("myModal<?=$product->getId(); ?>");
-                var img = document.getElementById("inline-image-<?=$product->getId(); ?>");
-                var captionText = document.getElementById("caption<?=$product->getId(); ?>");
-                img.onclick = function(){
-                    modal.style.display = "block";
+                var modal<?=$product->getId(); ?> = document.getElementById("myModal<?=$product->getId(); ?>");
+                var img<?=$product->getId(); ?> = document.getElementById("inline-image-<?=$product->getId(); ?>");
+                var captionText<?=$product->getId(); ?> = document.getElementById("caption<?=$product->getId(); ?>");
+                img<?=$product->getId(); ?>.onclick = function(){
+                    modal<?=$product->getId(); ?>.style.display = "block";
                 }
-                modal.onclick = function() {
-                    modal.style.display = "none";
+                modal<?=$product->getId(); ?>.onclick = function() {
+                    modal<?=$product->getId(); ?>.style.display = "none";
                 }
             </script>
         </td>
