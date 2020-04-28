@@ -8,27 +8,54 @@ $viewModel = $block->getViewModel();
     $lastItemNumber = count($columns);
 
     $product = $_item->getProduct();
-    $image_url = $viewModel->getImageUrl($product);
 
     if ($viewModel->isEnbaled()) { ?>
+        <?php
+            $image_url = $viewModel->getImageUrl($product);
+            $largeImage = $viewModel->getImageUrlLarge($product);
+            $images = $viewModel->getAllImages($product);
+        ?>
         <td class="<?= /* @noEscape */
         $columns['product_img'] ?>">
             <img id="inline-image-<?=$product->getId(); ?>" src="<?php echo $image_url; ?>"/>
             <div id="myModal<?=$product->getId(); ?>" class="modal">
-                <img class="modal-content" src="<?php echo $viewModel->getImageUrlLarge($product); ?>">
+                <div class="slider image-slider<?=$product->getId(); ?>">
+                    <div>
+                        <img class="image_l<?=$product->getId(); ?>" src="<?php echo $largeImage; ?>">
+                    </div>
+                    <?php foreach($images as $image): ?>
+                        <?php
+                        $file = $image->getFile();
+                        if (strpos( $image_url , $file )) {
+                            continue;
+                        } ?>
+                        <div>
+                            <img class="image_l<?=$product->getId(); ?>" src="<?php echo $image->getUrl(); ?>">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
                 <div class="caption" id="caption<?=$product->getId(); ?>"><?= $product->getName(); ?></div>
-                <div class="click-to-close">Click anywhere to close</div>
+                <div class="click-to-close"><button class="click-to-close<?=$product->getId(); ?>" onclick="$('myModal<?=$product->getId(); ?>').style.display = 'none'">CLOSE</button></div>
             </div>
             <script>
-                var modal<?=$product->getId(); ?> = document.getElementById("myModal<?=$product->getId(); ?>");
-                var img<?=$product->getId(); ?> = document.getElementById("inline-image-<?=$product->getId(); ?>");
-                var captionText<?=$product->getId(); ?> = document.getElementById("caption<?=$product->getId(); ?>");
-                img<?=$product->getId(); ?>.onclick = function(){
-                    modal<?=$product->getId(); ?>.style.display = "block";
-                }
-                modal<?=$product->getId(); ?>.onclick = function() {
-                    modal<?=$product->getId(); ?>.style.display = "none";
-                }
+                require([
+                    'jquery',
+                    'slick'
+                ], function ($) {
+                    var modal<?=$product->getId(); ?> = document.getElementById("myModal<?=$product->getId(); ?>");
+                    var img<?=$product->getId(); ?> = document.getElementById("inline-image-<?=$product->getId(); ?>");
+                    var captionText<?=$product->getId(); ?> = document.getElementById("caption<?=$product->getId(); ?>");
+                    img<?=$product->getId(); ?>.onclick = function(){
+                        modal<?=$product->getId(); ?>.style.display = "block";
+                        $('.image-slider<?=$product->getId(); ?>').slick({
+                            infinite: true,
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            dots: true,
+                            centerMode: true
+                        });
+                    }
+                });
             </script>
         </td>
     <?php } ?>

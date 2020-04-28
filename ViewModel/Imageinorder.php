@@ -29,11 +29,17 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
 
     public function getImageUrl( $product )
     {
-        return $this->helperImg->init($product, 'small_image')->setImageFile($product->getSmallImage())->resize(self::IMAGEWIDTH, self::IMAGEHEIGTH)->getUrl();
+        return $this->helperImg->init($product, 'base')->setImageFile($product->getSmallImage())->resize(self::IMAGEWIDTH, self::IMAGEHEIGTH)->getUrl();
     }
 
     public function getImageUrlLarge( $product )
     {
         return $this->helperImg->init($product, 'large_image')->setImageFile($product->getSmallImage())->resize(self::IMAGEWIDTHLARGE, self::IMAGEHEIGTHLARGE)->getUrl();
+    }
+
+    public function getAllImages( $product )
+    {
+        $test = $product->getMediaGalleryImages();
+        return $test;
     }
 }
