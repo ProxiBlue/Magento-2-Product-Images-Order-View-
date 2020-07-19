@@ -49,6 +49,6 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
             $test = $product->getMediaGalleryImages();
             return $test;
         }
-        retun '';
+        return '';
     }
 }
