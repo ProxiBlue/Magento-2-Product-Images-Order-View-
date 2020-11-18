@@ -8,8 +8,7 @@ $viewModel = $block->getViewModel();
     $lastItemNumber = count($columns);
 
     $product = $_item->getProduct();
-
-    if ($viewModel->isEnbaled()) { ?>
+    if (is_object($product) && $viewModel->isEnbaled()) { ?>
         <?php
             $image_url = $viewModel->getImageUrl($product);
             $largeImage = $viewModel->getImageUrlLarge($product);
