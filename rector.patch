@@ -1,0 +1,42 @@
+
+1 file with changes
+===================
+
+1) ViewModel/Imageinorder.php:5
+
+    ---------- begin diff ----------
+@@ @@
+
+ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInterface
+ {
+-    const IMAGEWIDTH = 200;
+-    const IMAGEHEIGTH = 200;
++    final const IMAGEWIDTH = 200;
++    final const IMAGEHEIGTH = 200;
+
+-    const IMAGEWIDTHLARGE = 500;
+-    const IMAGEHEIGTHLARGE = 500;
++    final const IMAGEWIDTHLARGE = 500;
++    final const IMAGEHEIGTHLARGE = 500;
+
+-
+-    protected $helperImg;
+-    protected $productImgHelper;
+-
+-    public function __construct( HelperImage $helperImg, ProductImgHelper $productImgHelper )
++    public function __construct(protected HelperImage $helperImg, protected ProductImgHelper $productImgHelper)
+     {
+-        $this->helperImg = $helperImg;
+-        $this->productImgHelper = $productImgHelper;
+     }
+
+     public function isEnbaled()
+    ----------- end diff -----------
+
+Applied rules:
+ * ClassPropertyAssignToConstructorPromotionRector (https://wiki.php.net/rfc/constructor_promotion https://github.com/php/php-src/pull/5291)
+ * FinalizePublicClassConstantRector (https://php.watch/versions/8.1/final-class-const)
+
+
+ [OK] 1 file would have changed (dry-run) by Rector                                                                     
+

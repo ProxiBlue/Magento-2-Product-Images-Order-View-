@@ -6,20 +6,14 @@ use Magento\Catalog\Helper\Image as HelperImage;
 
 class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    const IMAGEWIDTH = 200;
-    const IMAGEHEIGTH = 200;
+    final const IMAGEWIDTH = 200;
+    final const IMAGEHEIGTH = 200;
 
-    const IMAGEWIDTHLARGE = 500;
-    const IMAGEHEIGTHLARGE = 500;
+    final const IMAGEWIDTHLARGE = 500;
+    final const IMAGEHEIGTHLARGE = 500;
 
-
-    protected $helperImg;
-    protected $productImgHelper;
-
-    public function __construct( HelperImage $helperImg, ProductImgHelper $productImgHelper )
+    public function __construct(protected HelperImage $helperImg, protected ProductImgHelper $productImgHelper)
     {
-        $this->helperImg = $helperImg;
-        $this->productImgHelper = $productImgHelper;
     }
 
     public function isEnbaled()
