@@ -2,24 +2,26 @@
 
 declare(strict_types=1);
 
-use Rector\Core\Configuration\Option;
-use Rector\Php74\Rector\Property\TypedPropertyRector;
+use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Set\ValueObject\SetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    // get parameters
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
-        __DIR__ . './'
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->paths([
+        __DIR__,
     ]);
 
-    // Define what rule sets will be applied
-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_81);
+    // Define sets of rules
+    $rectorConfig->sets([
+        LevelSetList::UP_TO_PHP_80,
+        LevelSetList::UP_TO_PHP_81,
+        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_83,
+        SetList::CODE_QUALITY,
+        SetList::DEAD_CODE,
+        SetList::TYPE_DECLARATION,
+    ]);
 
-    // get services (needed for register a single rule)
-    // $services = $containerConfigurator->services();
-
-    // register a single rule
-    // $services->set(TypedPropertyRector::class);
+    // Set PHP version
+    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_83);
 };

@@ -6,11 +6,11 @@ use Magento\Catalog\Helper\Image as HelperImage;
 
 class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    final const IMAGEWIDTH = 200;
-    final const IMAGEHEIGTH = 200;
+    final const int IMAGEWIDTH = 200;
+    final const int IMAGEHEIGTH = 200;
 
-    final const IMAGEWIDTHLARGE = 500;
-    final const IMAGEHEIGTHLARGE = 500;
+    final const int IMAGEWIDTHLARGE = 500;
+    final const int IMAGEHEIGTHLARGE = 500;
 
     public function __construct(protected HelperImage $helperImg, protected ProductImgHelper $productImgHelper)
     {
@@ -40,8 +40,7 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
     public function getAllImages( $product )
     {
         if($product) {
-            $test = $product->getMediaGalleryImages();
-            return $test;
+            return $product->getMediaGalleryImages();
         }
         return '';
     }

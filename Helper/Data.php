@@ -10,7 +10,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->scopeConfig->isSetFlag('productimageinorder/general/enabled');
     }
 
-    public function getTemplate()
+    public function getTemplate(): string
     {
         if ($this->scopeConfig->isSetFlag('productimageinorder/general/enabled')) {
             $template = 'Magecomp_Productimageinorder::order/view/items.phtml';
@@ -21,7 +21,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $template;
     }
 
-    public function getOrderRendererDefaultTemplate()
+    public function getOrderRendererDefaultTemplate(): string
     {
         if ($this->scopeConfig->isSetFlag('productimageinorder/general/enabled')) {
             $template = 'Magecomp_Productimageinorder::order/view/items/renderer/default.phtml';
