@@ -1,42 +1,135 @@
+From 5fef4f603c08f83f31a45f603c28236df4e96627 Mon Sep 17 00:00:00 2001
+From: Lucas van Staden <sales@proxiblue.com.au>
+Date: Wed, 30 Jul 2025 02:37:01 +0800
+Subject: [PATCH] feat(php8.3): improve PHP 8.3 compliance using rector from
+ php8.1 base
 
-1 file with changes
-===================
+- Add string return types to Helper/Data.php methods (getTemplate, getOrderRendererDefaultTemplate)
+- Add int type declarations to constants in ViewModel/Imageinorder.php
+- Remove useless variable in ViewModel/Imageinorder.php getAllImages() method
+- Update rector.php configuration to modern RectorConfig format with PHP 8.3 rules
+- Bump version from 2.0.0 to 2.1.0 to reflect PHP 8.3 improvements
+- Applied rector rules: StringReturnTypeFromStrictStringReturnsRector, AddTypeToConstRector, SimplifyUselessVariableRector
 
-1) ViewModel/Imageinorder.php:5
+Working from php8.1 branch which is more up-to-date than master branch
+---
+ Helper/Data.php            |  4 ++--
+ ViewModel/Imageinorder.php | 11 +++++------
+ composer.json              |  2 +-
+ rector.php                 | 32 +++++++++++++++++---------------
+ 4 files changed, 25 insertions(+), 24 deletions(-)
 
-    ---------- begin diff ----------
-@@ @@
-
+diff --git a/Helper/Data.php b/Helper/Data.php
+index 12d0cc2..228600a 100755
+--- a/Helper/Data.php
++++ b/Helper/Data.php
+@@ -10,7 +10,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
+         return $this->scopeConfig->isSetFlag('productimageinorder/general/enabled');
+     }
+ 
+-    public function getTemplate()
++    public function getTemplate(): string
+     {
+         if ($this->scopeConfig->isSetFlag('productimageinorder/general/enabled')) {
+             $template = 'Magecomp_Productimageinorder::order/view/items.phtml';
+@@ -21,7 +21,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
+         return $template;
+     }
+ 
+-    public function getOrderRendererDefaultTemplate()
++    public function getOrderRendererDefaultTemplate(): string
+     {
+         if ($this->scopeConfig->isSetFlag('productimageinorder/general/enabled')) {
+             $template = 'Magecomp_Productimageinorder::order/view/items/renderer/default.phtml';
+diff --git a/ViewModel/Imageinorder.php b/ViewModel/Imageinorder.php
+index feb478b..1be9691 100755
+--- a/ViewModel/Imageinorder.php
++++ b/ViewModel/Imageinorder.php
+@@ -6,11 +6,11 @@ use Magento\Catalog\Helper\Image as HelperImage;
+ 
  class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInterface
  {
--    const IMAGEWIDTH = 200;
--    const IMAGEHEIGTH = 200;
-+    final const IMAGEWIDTH = 200;
-+    final const IMAGEHEIGTH = 200;
-
--    const IMAGEWIDTHLARGE = 500;
--    const IMAGEHEIGTHLARGE = 500;
-+    final const IMAGEWIDTHLARGE = 500;
-+    final const IMAGEHEIGTHLARGE = 500;
-
--
--    protected $helperImg;
--    protected $productImgHelper;
--
--    public function __construct( HelperImage $helperImg, ProductImgHelper $productImgHelper )
-+    public function __construct(protected HelperImage $helperImg, protected ProductImgHelper $productImgHelper)
+-    final const IMAGEWIDTH = 200;
+-    final const IMAGEHEIGTH = 200;
++    final const int IMAGEWIDTH = 200;
++    final const int IMAGEHEIGTH = 200;
+ 
+-    final const IMAGEWIDTHLARGE = 500;
+-    final const IMAGEHEIGTHLARGE = 500;
++    final const int IMAGEWIDTHLARGE = 500;
++    final const int IMAGEHEIGTHLARGE = 500;
+ 
+     public function __construct(protected HelperImage $helperImg, protected ProductImgHelper $productImgHelper)
      {
--        $this->helperImg = $helperImg;
--        $this->productImgHelper = $productImgHelper;
+@@ -40,8 +40,7 @@ class Imageinorder implements \Magento\Framework\View\Element\Block\ArgumentInte
+     public function getAllImages( $product )
+     {
+         if($product) {
+-            $test = $product->getMediaGalleryImages();
+-            return $test;
++            return $product->getMediaGalleryImages();
+         }
+         return '';
      }
-
-     public function isEnbaled()
-    ----------- end diff -----------
-
-Applied rules:
- * ClassPropertyAssignToConstructorPromotionRector (https://wiki.php.net/rfc/constructor_promotion https://github.com/php/php-src/pull/5291)
- * FinalizePublicClassConstantRector (https://php.watch/versions/8.1/final-class-const)
-
-
- [OK] 1 file would have changed (dry-run) by Rector                                                                     
+diff --git a/composer.json b/composer.json
+index 533ee35..78352eb 100755
+--- a/composer.json
++++ b/composer.json
+@@ -5,7 +5,7 @@
+         "php": ">=8.1"
+     },
+     "type": "magento2-module",
+-    "version": "2.0.0",
++    "version": "2.1.0",
+     "license": [
+         "OSL-3.0",
+         "AFL-3.0"
+diff --git a/rector.php b/rector.php
+index e01eb28..f6863a5 100644
+--- a/rector.php
++++ b/rector.php
+@@ -2,24 +2,26 @@
+ 
+ declare(strict_types=1);
+ 
+-use Rector\Core\Configuration\Option;
+-use Rector\Php74\Rector\Property\TypedPropertyRector;
++use Rector\Config\RectorConfig;
+ use Rector\Set\ValueObject\LevelSetList;
+-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
++use Rector\Set\ValueObject\SetList;
+ 
+-return static function (ContainerConfigurator $containerConfigurator): void {
+-    // get parameters
+-    $parameters = $containerConfigurator->parameters();
+-    $parameters->set(Option::PATHS, [
+-        __DIR__ . './'
++return static function (RectorConfig $rectorConfig): void {
++    $rectorConfig->paths([
++        __DIR__,
+     ]);
+ 
+-    // Define what rule sets will be applied
+-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_81);
+-
+-    // get services (needed for register a single rule)
+-    // $services = $containerConfigurator->services();
++    // Define sets of rules
++    $rectorConfig->sets([
++        LevelSetList::UP_TO_PHP_80,
++        LevelSetList::UP_TO_PHP_81,
++        LevelSetList::UP_TO_PHP_82,
++        LevelSetList::UP_TO_PHP_83,
++        SetList::CODE_QUALITY,
++        SetList::DEAD_CODE,
++        SetList::TYPE_DECLARATION,
++    ]);
+ 
+-    // register a single rule
+-    // $services->set(TypedPropertyRector::class);
++    // Set PHP version
++    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_83);
+ };
+-- 
+2.43.0
 
